@@ -6,17 +6,37 @@ def letter_count(file_contents):
       result[char] += 1
     else:
       result[char] = 1
-  print(result)
+  return result
 
 def num_words(file_contents):
   words = file_contents.split()
-  print(len(words))
+  return len(words)
+
+def sort_func(dict):
+  return dict[1]
+
+def print_report(file_path, num_words, char_dict):
+  print(f"--- Begin report of {file_path} ---")
+  print(f"{num_words} words found in the document\n\n")
+  
+  list_of_dict = list(char_dict.items())
+  list_of_dict.sort(reverse=True, key=sort_func)
+  for item in list_of_dict:
+    key = item[0]  
+    if not key.isalpha():
+        continue
+    print(f"The '{key}' character was found {char_dict[key]} times")
+  print("--- End report ---")
+
+def read_file(file_path):
+  with open(file_path) as f:
+    return f.read()
 
 def main():
-  with open("books/frankenstein.txt") as f:
-    file_contents = f.read()
-    # print(file_contents)
-    num_words(file_contents)
-    letter_count(file_contents)
+  file_path = "books/frankenstein.txt"
+  file_contents = read_file(file_path)
+  number_words = num_words(file_contents)
+  char_dict = letter_count(file_contents)
+  print_report(file_path, number_words, char_dict)
 
 main()
